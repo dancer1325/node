@@ -6,33 +6,27 @@
 
 <!--name=module-->
 
-CommonJS modules are the original way to package JavaScript code for Node.js.
-Node.js also supports the [ECMAScript modules][] standard used by browsers
-and other JavaScript runtimes.
+* Node.js' modules supported
+  * CommonJS modules
+    * 💡original way -- to -- package JS code 💡
+  * [ECMAScript modules][]
 
-In Node.js, each file is treated as a separate module. For
-example, consider a file named `foo.js`:
+* 👀EACH file | Node.js -- is treated as a -- separate module 👀
+  * _Example:_ file named `foo.js`
+    ```circle.js
+    const { PI } = Math;
 
-```js
-const circle = require('./circle.js');
-console.log(`The area of a circle of radius 4 is ${circle.area(4)}`);
-```
+    // export functions
+    exports.area = (r) => PI * r ** 2;
+    exports.circumference = (r) => 2 * PI * r;
+    ```
+    ```js
+    const circle = require('./circle.js');    // load a module
+    console.log(`The area of a circle of radius 4 is ${circle.area(4)}`);
+    ```
 
-On the first line, `foo.js` loads the module `circle.js` that is in the same
-directory as `foo.js`.
-
-Here are the contents of `circle.js`:
-
-```js
-const { PI } = Math;
-
-exports.area = (r) => PI * r ** 2;
-
-exports.circumference = (r) => 2 * PI * r;
-```
-
-The module `circle.js` has exported the functions `area()` and
-`circumference()`. Functions and objects are added to the root of a module
+* TODO:
+Functions and objects are added to the root of a module
 by specifying additional properties on the special `exports` object.
 
 Variables local to the module will be private, because the module is wrapped
@@ -832,10 +826,9 @@ added: v0.1.12
 <!-- type=var -->
 
 * {Object}
-
-A reference to the `module.exports` that is shorter to type.
-See the section about the [exports shortcut][] for details on when to use
-`exports` and when to use `module.exports`.
+* 👀== `module.exports`' alias 👀
+  * `exports` use vs `module.exports` use
+    * see [exports shortcut][]
 
 ### `module`
 
@@ -1052,53 +1045,46 @@ added: v0.1.16
 -->
 
 * {Object}
+* 👀-- created by the -- `Module` system 👀
+  * SOMETIMES, this is NOT acceptable
+    * Reason: 🧠 many want their module == instance of some class 🧠
+      * -> assign the desired export object ⚠️IMMEDIATELY (!= done | callbacks) ⚠️ -- to -- `module.exports`
+        * == rebind == create a NEW reference != modify an EXISTING value
+        * _Example1:_ module called `a.js`
 
-The `module.exports` object is created by the `Module` system. Sometimes this is
-not acceptable; many want their module to be an instance of some class. To do
-this, assign the desired export object to `module.exports`. Assigning
-the desired object to `exports` will simply rebind the local `exports` variable,
-which is probably not what is desired.
+          ```a.js
+          const EventEmitter = require('node:events');
 
-For example, suppose we were making a module called `a.js`:
+          module.exports = new EventEmitter();
 
-```js
-const EventEmitter = require('node:events');
+          // Do some work, and after some time emit
+          // the 'ready' event from the module itself.
+          setTimeout(() => {
+            module.exports.emit('ready');
+          }, 1000);
+          ```
 
-module.exports = new EventEmitter();
+          | ANOTHER file
 
-// Do some work, and after some time emit
-// the 'ready' event from the module itself.
-setTimeout(() => {
-  module.exports.emit('ready');
-}, 1000);
-```
+          ```b.js
+          const a = require('./a');
+          a.on('ready', () => {
+            console.log('module "a" is ready');
+          });
+          ```
 
-Then in another file we could do:
+        * _Example2:_ make the assignment NOT IMMEDIATELY
 
-```js
-const a = require('./a');
-a.on('ready', () => {
-  console.log('module "a" is ready');
-});
-```
+          ```x.js
+          setTimeout(() => {
+            module.exports = { a: 'hello' };
+          }, 0);
+          ```
 
-Assignment to `module.exports` must be done immediately. It cannot be
-done in any callbacks. This does not work:
-
-`x.js`:
-
-```js
-setTimeout(() => {
-  module.exports = { a: 'hello' };
-}, 0);
-```
-
-`y.js`:
-
-```js
-const x = require('./x');
-console.log(x.a);
-```
+          ```y.js
+          const x = require('./x');
+          console.log(x.a);
+          ```
 
 #### `exports` shortcut
 
@@ -1106,6 +1092,7 @@ console.log(x.a);
 added: v0.1.16
 -->
 
+* TODO:
 The `exports` variable is available within a module's file-level scope, and is
 assigned the value of `module.exports` before the module is evaluated.
 
