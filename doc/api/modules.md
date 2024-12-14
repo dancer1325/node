@@ -1021,12 +1021,8 @@ added: v0.1.16
 
 <!-- name=module -->
 
-* {Object}
-
-In each module, the `module` free variable is a reference to the object
-representing the current module. For convenience, `module.exports` is
-also accessible via the `exports` module-global. `module` is not actually
-a global but rather local to each module.
+* {Object} / -- refer to the -- current module
+  * 👀== local / EACH module != global 👀
 
 ### `module.children`
 
@@ -1085,6 +1081,7 @@ added: v0.1.16
           const x = require('./x');
           console.log(x.a);
           ```
+  * `module.exports.newVariable` can be assigned
 
 #### `exports` shortcut
 
@@ -1092,49 +1089,43 @@ added: v0.1.16
 added: v0.1.16
 -->
 
-* TODO:
-The `exports` variable is available within a module's file-level scope, and is
-assigned the value of `module.exports` before the module is evaluated.
+* available | module's file-level scope
+* 👀' value == `module.exports`' value | BEFORE the module is evaluated 👀
+* module-global
+* `exports.newVariable` can be assigned
+  * -> ⚠️`exports` is NO longer bound to `module.exports` ⚠️
+    * _Example:_ see [here](modules/assignVariablesToModules.js)
 
-It allows a shortcut, so that `module.exports.f = ...` can be written more
-succinctly as `exports.f = ...`. However, be aware that like any variable, if a
-new value is assigned to `exports`, it is no longer bound to `module.exports`:
+      ```js
+      module.exports.hello = true; // Exported from require of module
+      exports = { hello: false };  // Not exported, only available in the module
+      ```
 
-```js
-module.exports.hello = true; // Exported from require of module
-exports = { hello: false };  // Not exported, only available in the module
-```
+    * -> 👀 recommended to reassign `exports` 👀
+      * recommended pattern
 
-When the `module.exports` property is being completely replaced by a new
-object, it is common to also reassign `exports`:
+        ```js
+        module.exports = exports = function Constructor() {
+        // ... etc.
+        };
+        ```
+        * _Example:_ implementation of `require()`
 
-<!-- eslint-disable func-name-matching -->
+          ```js
+          function require(/* ... */) {
+            const module = { exports: {} }; // Creates a new module object with empty exports
 
-```js
-module.exports = exports = function Constructor() {
-  // ... etc.
-};
-```
+            // invoke function / module & module.exports as parameters
+            ((module, exports) => {
+              function someFunc() {}
 
-To illustrate the behavior, imagine this hypothetical implementation of
-`require()`, which is quite similar to what is actually done by `require()`:
+              exports = someFunc;  // unbound exports --- to -- module.exports
 
-```js
-function require(/* ... */) {
-  const module = { exports: {} };
-  ((module, exports) => {
-    // Module code here. In this example, define a function.
-    function someFunc() {}
-    exports = someFunc;
-    // At this point, exports is no longer a shortcut to module.exports, and
-    // this module will still export an empty default object.
-    module.exports = someFunc;
-    // At this point, the module will now export someFunc, instead of the
-    // default object.
-  })(module, module.exports);
-  return module.exports;
-}
-```
+              module.exports = someFunc; // bounds again exports --- to -- module.exports
+            })(module, module.exports);
+          return module.exports;
+          }
+          ```
 
 ### `module.filename`
 
