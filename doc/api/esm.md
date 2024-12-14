@@ -84,10 +84,16 @@ changes:
 
 <!--name=esm-->
 
-ECMAScript modules are [the official standard format][] to package JavaScript
-code for reuse. Modules are defined using a variety of [`import`][] and
-[`export`][] statements.
+* ECMAScript modules
+  * == [official standard format][] -- to -- package JS code for reuse
+  * standard used by
+    * browsers
+    * other JS runtimes
+  * defined -- via --
+    * [`import`][]
+    * [`export`][]
 
+* TODO:
 The following example of an ES module exports a function:
 
 ```js
@@ -1148,5 +1154,5 @@ resolution for ESM specifiers is [commonjs-extension-resolution-loader][].
 [percent-encoded]: url.md#percent-encoding-in-urls
 [special scheme]: https://url.spec.whatwg.org/#special-scheme
 [status code]: process.md#exit-codes
-[the official standard format]: https://tc39.github.io/ecma262/#sec-modules
+[official standard format]: https://tc39.github.io/ecma262/#sec-modules
 [url.pathToFileURL]: url.md#urlpathtofileurlpath-options
