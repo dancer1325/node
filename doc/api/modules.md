@@ -1042,45 +1042,45 @@ added: v0.1.16
 
 * {Object}
 * 👀-- created by the -- `Module` system 👀
-  * SOMETIMES, this is NOT acceptable
+  * ❌SOMETIMES, this is NOT acceptable ❌
     * Reason: 🧠 many want their module == instance of some class 🧠
-      * -> assign the desired export object ⚠️IMMEDIATELY (!= done | callbacks) ⚠️ -- to -- `module.exports`
-        * == rebind == create a NEW reference != modify an EXISTING value
-        * _Example1:_ module called `a.js`
+    * -> assign the desired export object ⚠️IMMEDIATELY (!= done | callbacks) ⚠️ -- to -- `module.exports`
+      * == rebind == create a NEW reference != modify an EXISTING value
+      * _Example1:_ module called `a.js`
 
-          ```a.js
-          const EventEmitter = require('node:events');
+        ```a.js
+        const EventEmitter = require('node:events');
 
-          module.exports = new EventEmitter();
+        module.exports = new EventEmitter();
 
-          // Do some work, and after some time emit
-          // the 'ready' event from the module itself.
-          setTimeout(() => {
-            module.exports.emit('ready');
-          }, 1000);
-          ```
+        // Do some work, and after some time emit
+        // the 'ready' event from the module itself.
+        setTimeout(() => {
+          module.exports.emit('ready');
+        }, 1000);
+        ```
 
-          | ANOTHER file
+        | ANOTHER file
 
-          ```b.js
-          const a = require('./a');
-          a.on('ready', () => {
-            console.log('module "a" is ready');
-          });
-          ```
+        ```b.js
+        const a = require('./a');
+        a.on('ready', () => {
+          console.log('module "a" is ready');
+        });
+        ```
 
-        * _Example2:_ make the assignment NOT IMMEDIATELY
+      * _Example2:_ make the assignment NOT IMMEDIATELY
 
-          ```x.js
-          setTimeout(() => {
-            module.exports = { a: 'hello' };
-          }, 0);
-          ```
+        ```x.js
+        setTimeout(() => {
+          module.exports = { a: 'hello' };
+        }, 0);
+        ```
 
-          ```y.js
-          const x = require('./x');
-          console.log(x.a);
-          ```
+        ```y.js
+        const x = require('./x');
+        console.log(x.a);
+        ```
   * `module.exports.newVariable` can be assigned
 
 #### `exports` shortcut
@@ -1089,7 +1089,7 @@ added: v0.1.16
 added: v0.1.16
 -->
 
-* available | module's file-level scope
+* 👀available | module's file-level scope 👀
 * 👀' value == `module.exports`' value | BEFORE the module is evaluated 👀
 * module-global
 * `exports.newVariable` can be assigned
