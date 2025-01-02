@@ -6,16 +6,16 @@
 
 <!-- source_link=lib/repl.js -->
 
-The `node:repl` module provides a Read-Eval-Print-Loop (REPL) implementation
-that is available both as a standalone program or includible in other
-applications. It can be accessed using:
-
-```js
-const repl = require('node:repl');
-```
+* `node:repl` module
+  * == Read-Eval-Print-Loop (REPL) implementation /
+    * AVAILABLE -- via --
+      * standalone program or
+      * includible | OTHER applications
+  * _Example:_ [here](samples/repl)
 
 ## Design and features
 
+TODO:
 The `node:repl` module exports the [`repl.REPLServer`][] class. While running,
 instances of [`repl.REPLServer`][] will accept individual lines of user input,
 evaluate those according to a user-defined evaluation function, then output the
