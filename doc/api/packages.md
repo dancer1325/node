@@ -43,31 +43,25 @@ changes:
       `"type"` field.
 -->
 
+* goal
+  * package authors writing `package.json`
+  * reference for the [`package.json`][] / defined by Node.js
+
 ## Introduction
 
-A package is a folder tree described by a `package.json` file. The package
-consists of the folder containing the `package.json` file and all subfolders
-until the next folder containing another `package.json` file, or a folder
-named `node_modules`.
-
-This page provides guidance for package authors writing `package.json` files
-along with a reference for the [`package.json`][] fields defined by Node.js.
+* package
+  * 👀== folder tree + ALL subfolders / UNTIL it contains `package.json` or `node_modules` 👀
+    * folder tree -- described by a -- `package.json`
 
 ## Determining module system
 
 ### Introduction
 
-Node.js will treat the following as [ES modules][] when passed to `node` as the
-initial input, or when referenced by `import` statements or `import()`
-expressions:
-
-* Files with an `.mjs` extension.
-
-* Files with a `.js` extension when the nearest parent `package.json` file
-  contains a top-level [`"type"`][] field with a value of `"module"`.
-
-* Strings passed in as an argument to `--eval`, or piped to `node` via `STDIN`,
-  with the flag `--input-type=module`.
+* 👀use cases / Node.js will treat -- the following as -- [ES modules][] | pass to `node` or referenced by `import` or `import()` 👀
+  * files / `.mjs` extension
+  * files / `.js` extension & nearest parent `package.json` / top-level [`"type"`][] field == `"module"`
+  * TODO: Strings passed in as an argument to `--eval`, or piped to `node` via `STDIN`,
+    with the flag `--input-type=module`.
 
 * Code containing syntax only successfully parsed as [ES modules][], such as
   `import` or `export` statements or `import.meta`, with no explicit marker of
