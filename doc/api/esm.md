@@ -85,39 +85,18 @@ changes:
 <!--name=esm-->
 
 * ECMAScript modules
-  * == [official standard format][] -- to -- package JS code for reuse
+  * 👀== [official standard format][] -- to -- package JS code for reuse 👀
   * standard used by
     * browsers
     * other JS runtimes
+      * FULLY supported by Node.js
+        * Reason: 🧠
+          * they are currently specified
+          * they provide interoperability -- with -- NodeJs original module format ([CommonJS][]) 🧠
   * defined -- via --
     * [`import`][]
     * [`export`][]
-
-* TODO:
-The following example of an ES module exports a function:
-
-```js
-// addTwo.mjs
-function addTwo(num) {
-  return num + 2;
-}
-
-export { addTwo };
-```
-
-The following example of an ES module imports the function from `addTwo.mjs`:
-
-```js
-// app.mjs
-import { addTwo } from './addTwo.mjs';
-
-// Prints: 6
-console.log(addTwo(4));
-```
-
-Node.js fully supports ECMAScript modules as they are currently specified and
-provides interoperability between them and its original module format,
-[CommonJS][].
+  * _Example:_ see [here](samples/esm)
 
 <!-- Anchors to make sure old links find a target -->
 
@@ -127,22 +106,19 @@ provides interoperability between them and its original module format,
 
 <!-- type=misc -->
 
-Node.js has two module systems: [CommonJS][] modules and ECMAScript modules.
+* Node.js' module systems
+  * [CommonJS][] modules
+    * 👀ways to be specified -- for -- NodeJs 👀
+      * `.cjs` files
+      * `package.json` [`"type"`][] = `"commonjs"`,
+      * [`--input-type`][] flag = `"commonjs"`
+  * ECMAScript modules
+    * 👀ways to be specified -- for -- NodeJs 👀
+      * `.mjs` files
+      * `package.json` [`"type"`][] = `"module"`,
+      * [`--input-type`][] flag = `"module"`
 
-Authors can tell Node.js to interpret JavaScript as an ES module via the `.mjs`
-file extension, the `package.json` [`"type"`][] field with a value `"module"`,
-or the [`--input-type`][] flag with a value of `"module"`. These are explicit
-markers of code being intended to run as an ES module.
-
-Inversely, authors can explicitly tell Node.js to interpret JavaScript as
-CommonJS via the `.cjs` file extension, the `package.json` [`"type"`][] field
-with a value `"commonjs"`, or the [`--input-type`][] flag with a value of
-`"commonjs"`.
-
-When code lacks explicit markers for either module system, Node.js will inspect
-the source code of a module to look for ES module syntax. If such syntax is
-found, Node.js will run the code as an ES module; otherwise it will run the
-module as CommonJS. See [Determining module system][] for more details.
+* 👀Node.js [Determining module system][] 👀
 
 <!-- Anchors to make sure old links find a target -->
 
@@ -150,12 +126,13 @@ module as CommonJS. See [Determining module system][] for more details.
 
 ## Packages
 
-This section was moved to [Modules: Packages](packages.md).
+* see [Modules: Packages](packages.md)
 
 ## `import` Specifiers
 
 ### Terminology
 
+* TODO:
 The _specifier_ of an `import` statement is the string after the `from` keyword,
 e.g. `'node:path'` in `import { sep } from 'node:path'`. Specifiers are also
 used in `export from` statements, and as the argument to an `import()`
