@@ -870,15 +870,27 @@ changes:
     description: Built-in libraries are now available as predefined variables.
 -->
 
-Evaluate the following argument as JavaScript. The modules which are
-predefined in the REPL can also be used in `script`.
+* `"script"`
+  * == it's evaluated -- as -- JavaScript
+  * ALLOWED
+    * script itself
 
-On Windows, using `cmd.exe` a single quote will not work correctly because it
-only recognizes double `"` for quoting. In Powershell or Git bash, both `'`
-and `"` are usable.
+      ```
+      node --eval "console.log('Hello, World!')"
+      ```
+    * modules / predefined | REPL
 
-It is possible to run code containing inline types by passing
-[`--experimental-strip-types`][].
+      ```
+      node --eval "console.log(process.version)"
+      ```
+  * |
+    * Windows,
+      * ONLY allowed, double `"`
+    * Powershell or Git bash,
+      * ALLOWED,
+        * `'`
+        * `"`
+  * if you want to run code / contain inline types -> pass [`--experimental-strip-types`][]
 
 ### `--experimental-eventsource`
 
@@ -888,6 +900,7 @@ added:
   - v20.18.0
 -->
 
+* TODO:
 Enable exposition of [EventSource Web API][] on the global scope.
 
 ### `--experimental-import-meta-resolve`
