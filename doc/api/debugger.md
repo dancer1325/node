@@ -11,16 +11,17 @@
   * ⚠️!= FULL-featured debugger ⚠️
   * enables
     * stepping
-      * == set a breakpoint
     * inspection
+* ways to run it
+  * `node inspect pathToScriptToDebug`
+    * 💡OPEN the debugger client | FIRST line 💡
+      * ❌NO need breakpoints ❌
+    * _Example:_ [here](examples/debuger)
+  * `NODE_INSPECT_RESUME_ON_START=1 node inspect pathToScriptToDebug`
+    * OPEN the debugger client | ⚠️FIRST breakpoint ⚠️
 
-* `node inspect pathToScriptToDebug`
-  * 💡ALTHOUGH there are NOT breakpoints -> OPEN the debugger client | FIRST line 💡
-  * _Example:_ [here](examples/debuger)
-
-* ways to specify a breakpoint
-  * [`debugger`][] statement
-  * `NODE_INSPECT_RESUME_ON_START=1`
+* [`debugger`][] statement
+  * specify a breakpoint
 
 * `repl`
   * allows

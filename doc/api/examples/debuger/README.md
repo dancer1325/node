@@ -10,3 +10,5 @@
   * open the debugger client | FIRST line
 * `node inspect myScriptWithoutDebugger.js`
   * ALTHOUGH NO `debugger` -> open the debugger client | FIRST line
+* `NODE_INSPECT_RESUME_ON_START=1 node inspect myScript.js`
+  * open the debugger client | FIRST breakpoint
