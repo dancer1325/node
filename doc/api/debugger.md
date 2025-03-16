@@ -6,117 +6,74 @@
 
 <!-- type=misc -->
 
-Node.js includes a command-line debugging utility. The Node.js debugger client
-is not a full-featured debugger, but simple stepping and inspection are
-possible.
+* == built-in command-line debugging utility
+* Node.js debugger client
+  * ⚠️!= FULL-featured debugger ⚠️
+  * enables
+    * stepping
+      * == set a breakpoint
+    * inspection
 
-To use it, start Node.js with the `inspect` argument followed by the path to the
-script to debug.
+* `node inspect pathToScriptToDebug`
+  * 💡ALTHOUGH there are NOT breakpoints -> OPEN the debugger client | FIRST line 💡
+  * _Example:_ [here](examples/debuger)
 
-```console
-$ node inspect myscript.js
-< Debugger listening on ws://127.0.0.1:9229/621111f9-ffcb-4e82-b718-48a145fa5db8
-< For help, see: https://nodejs.org/en/docs/inspector
-<
-connecting to 127.0.0.1:9229 ... ok
-< Debugger attached.
-<
- ok
-Break on start in myscript.js:2
-  1 // myscript.js
-> 2 global.x = 5;
-  3 setTimeout(() => {
-  4   debugger;
-debug>
-```
+* ways to specify a breakpoint
+  * [`debugger`][] statement
+  * `NODE_INSPECT_RESUME_ON_START=1`
 
-The debugger automatically breaks on the first executable line. To instead
-run until the first breakpoint (specified by a [`debugger`][] statement), set
-the `NODE_INSPECT_RESUME_ON_START` environment variable to `1`.
+* `repl`
+  * allows
+    * evaluating the code remotely
 
-```console
-$ cat myscript.js
-// myscript.js
-global.x = 5;
-setTimeout(() => {
-  debugger;
-  console.log('world');
-}, 1000);
-console.log('hello');
-$ NODE_INSPECT_RESUME_ON_START=1 node inspect myscript.js
-< Debugger listening on ws://127.0.0.1:9229/f1ed133e-7876-495b-83ae-c32c6fc319c2
-< For help, see: https://nodejs.org/en/docs/inspector
-<
-connecting to 127.0.0.1:9229 ... ok
-< Debugger attached.
-<
-< hello
-<
-break in myscript.js:4
-  2 global.x = 5;
-  3 setTimeout(() => {
-> 4   debugger;
-  5   console.log('world');
-  6 }, 1000);
-debug> next
-break in myscript.js:5
-  3 setTimeout(() => {
-  4   debugger;
-> 5   console.log('world');
-  6 }, 1000);
-  7 console.log('hello');
-debug> repl
-Press Ctrl+C to leave debug repl
-> x
-5
-> 2 + 2
-4
-debug> next
-< world
-<
-break in myscript.js:6
-  4   debugger;
-  5   console.log('world');
-> 6 }, 1000);
-  7 console.log('hello');
-  8
-debug> .exit
-$
-```
+* `next`
+  * allows
+    * stepping -- to the -- NEXT line
 
-The `repl` command allows code to be evaluated remotely. The `next` command
-steps to the next line. Type `help` to see what other commands are available.
+* `help`
+  * display OTHER available commands
 
-Pressing `enter` without typing a command will repeat the previous debugger
-command.
+* `enter`
+  * ⚠️repeat the PREVIOUS debugger command ⚠️
 
 ## Watchers
 
-It is possible to watch expression and variable values while debugging. On
-every breakpoint, each expression from the watchers list will be evaluated
-in the current context and displayed immediately before the breakpoint's
-source code listing.
+* allows
+  * | debugging, watching expression & variable
 
-To begin watching an expression, type `watch('my_expression')`. The command
-`watchers` will print the active watchers. To remove a watcher, type
-`unwatch('my_expression')`.
+* `watch('my_expression')`
+  * watch an expression
+
+* `watchers`
+  * print the ACTIVE watchers
+
+* `unwatch('my_expression')`
+  * remove a watcher
 
 ## Command reference
 
 ### Stepping
 
-* `cont`, `c`: Continue execution
-* `next`, `n`: Step next
-* `step`, `s`: Step in
-* `out`, `o`: Step out
-* `pause`: Pause running code (like pause button in Developer Tools)
+* `cont`, `c`
+  * Continue execution
+* `next`, `n`
+  * Step next
+* `step`, `s`
+  * Step in
+* `out`, `o`
+  * Step out
+* `pause`
+  * Pause running code (❓)
 
 ### Breakpoints
 
-* `setBreakpoint()`, `sb()`: Set breakpoint on current line
-* `setBreakpoint(line)`, `sb(line)`: Set breakpoint on specific line
-* `setBreakpoint('fn()')`, `sb(...)`: Set breakpoint on a first statement in
-  function's body
+* `setBreakpoint()`, `sb()`
+  * Set breakpoint | CURRENT line
+* `setBreakpoint(line)`, `sb(line)`
+  * Set breakpoint | SPECIFIC line
+* `setBreakpoint('fn()')`, `sb(...)`
+  * TODO: Set breakpoint on a first statement in
+    function's body
 * `setBreakpoint('script.js', 1)`, `sb(...)`: Set breakpoint on first line of
   `script.js`
 * `setBreakpoint('script.js', 1, 'num < 4')`, `sb(...)`: Set conditional
@@ -213,14 +170,19 @@ debug>
 
 ### Execution control
 
-* `run`: Run script (automatically runs on debugger's start)
-* `restart`: Restart script
-* `kill`: Kill script
+* `run`
+  * Run script
+* `restart`
+  * Restart script
+* `kill`
+  * Kill script
 
 ### Various
 
-* `scripts`: List all loaded scripts
-* `version`: Display V8's version
+* `scripts`
+  * List ALL loaded scripts
+* `version`
+  * Display V8's version
 
 ## Advanced usage
 
