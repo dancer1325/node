@@ -6,49 +6,38 @@
 
 <!-- source_link=lib/http.js -->
 
-This module, containing both a client and server, can be imported via
-`require('node:http')` (CommonJS) or `import * as http from 'node:http'` (ES module).
-
-The HTTP interfaces in Node.js are designed to support many features
-of the protocol which have been traditionally difficult to use.
-In particular, large, possibly chunk-encoded, messages. The interface is
-careful to never buffer entire requests or responses, so the
-user is able to stream data.
-
-HTTP message headers are represented by an object like this:
-
-```json
-{ "content-length": "123",
-  "content-type": "text/plain",
-  "connection": "keep-alive",
-  "host": "example.com",
-  "accept": "*/*" }
-```
-
-Keys are lowercased. Values are not modified.
-
-In order to support the full spectrum of possible HTTP applications, the Node.js
-HTTP API is very low-level. It deals with stream handling and message
-parsing only. It parses a message into headers and body but it does not
-parse the actual headers or the body.
-
-See [`message.headers`][] for details on how duplicate headers are handled.
-
-The raw headers as they were received are retained in the `rawHeaders`
-property, which is an array of `[key, value, key2, value2, ...]`. For
-example, the previous message header object might have a `rawHeaders`
-list like the following:
-
-<!-- eslint-disable @stylistic/js/semi -->
-
-```js
-[ 'ConTent-Length', '123456',
-  'content-LENGTH', '123',
-  'content-type', 'text/plain',
-  'CONNECTION', 'keep-alive',
-  'Host', 'example.com',
-  'accepT', '*/*' ]
-```
+* == client + server,
+* ways to import it
+  * | CommonJS or
+    ```
+    require('node:http')
+    ```
+  * | ES module,
+    ```
+    import * as http from 'node:http'
+    ```
+* Node.js' HTTP interfaces
+  * support MANY features of the protocol
+  * HTTP message headers -- are represented by an -- object
+    ```json
+    { "content-length": "123",
+      "content-type": "text/plain",
+      "connection": "keep-alive",
+      "host": "example.com",
+      "accept": "*/*" }
+    ```
+    * Keys
+      * lowercased
+    * Values
+      * NOT modified
+* Node.js HTTP API
+  * 👀very low-level 👀
+    * Reason: 🧠support the FULL spectrum of possible HTTP applications 🧠
+  * -- deals with --
+    * stream handling
+    * message parsing
+      * == message -- is parsed into -- headers & body
+      * NOT parse the ACTUAL headers or body
 
 ## Class: `http.Agent`
 
@@ -399,13 +388,17 @@ added: v0.1.17
 -->
 
 * Extends: {http.OutgoingMessage}
+* created internally
+* 👀returned -- from -- [`http.request()`][] 👀
+* == 💡_in-progress_ request /
+  * header -- has ALREADY been -- queued 💡
+    * == STILL mutable -- via -- API
+      * [`setHeader(name, value)`][],
+      * [`getHeader(name)`][],
+      * [`removeHeader(name)`][]
+    * if FIRST data chunk OR calling [`request.end()`][] -> ACTUAL header is sent
 
-This object is created internally and returned from [`http.request()`][]. It
-represents an _in-progress_ request whose header has already been queued. The
-header is still mutable using the [`setHeader(name, value)`][],
-[`getHeader(name)`][], [`removeHeader(name)`][] API. The actual header will
-be sent along with the first data chunk or when calling [`request.end()`][].
-
+* TODO:
 To get the response, add a listener for [`'response'`][] to the request object.
 [`'response'`][] will be emitted from the request object when the response
 headers have been received. The [`'response'`][] event is executed with one
@@ -2748,35 +2741,31 @@ changes:
       on the prototype and is no longer enumerable.
 -->
 
-* {Object}
-
-The request/response headers object.
-
-Key-value pairs of header names and values. Header names are lower-cased.
-
-```js
-// Prints something like:
-//
-// { 'user-agent': 'curl/7.22.0',
-//   host: '127.0.0.1:8000',
-//   accept: '*/*' }
-console.log(request.headers);
-```
-
-Duplicates in raw headers are handled in the following ways, depending on the
-header name:
-
-* Duplicates of `age`, `authorization`, `content-length`, `content-type`,
-  `etag`, `expires`, `from`, `host`, `if-modified-since`, `if-unmodified-since`,
-  `last-modified`, `location`, `max-forwards`, `proxy-authorization`, `referer`,
-  `retry-after`, `server`, or `user-agent` are discarded.
-  To allow duplicate values of the headers listed above to be joined,
-  use the option `joinDuplicateHeaders` in [`http.request()`][]
-  and [`http.createServer()`][]. See RFC 9110 Section 5.3 for more
-  information.
-* `set-cookie` is always an array. Duplicates are added to the array.
-* For duplicate `cookie` headers, the values are joined together with `; `.
-* For all other headers, the values are joined together with `, `.
+* == request/response headers{Object}
+* == Key-value pairs
+  * == headerNames-headerValues
+    * headerNames
+      * lower-cased
+* _Example:_
+  ```js
+  // Prints something like:
+  //
+  // { 'user-agent': 'curl/7.22.0',
+  //   host: '127.0.0.1:8000',
+  //   accept: '*/*' }
+  console.log(request.headers);
+  ```
+* if duplicated headers are
+  * ⚠️`age`, `authorization`, `content-length`, `content-type`,
+    `etag`, `expires`, `from`, `host`, `if-modified-since`, `if-unmodified-since`,
+    `last-modified`, `location`, `max-forwards`, `proxy-authorization`, `referer`,
+    `retry-after`, `server`, or `user-agent` -> discarded ⚠️
+    * if you want joining -> use `joinDuplicateHeaders` | [`http.request()`][] & [`http.createServer()`][]
+      * see [RFC 9110 Section 5.3](https://datatracker.ietf.org/doc/html/rfc9110#name-field-order)
+  * `set-cookie` -> added | array
+    * Reason: 🧠ALWAYS, it's an array 🧠
+  * `cookie` -> values -- are joined with -- `;`
+  * OTHERS -> values -- are joined with -- `,`
 
 ### `message.headersDistinct`
 
@@ -2833,29 +2822,39 @@ The request method as a string. Read only. Examples: `'GET'`, `'DELETE'`.
 added: v0.11.6
 -->
 
-* {string\[]}
-
-The raw request/response headers list exactly as they were received.
-
-The keys and values are in the same list. It is _not_ a
-list of tuples. So, the even-numbered offsets are key values, and the
-odd-numbered offsets are the associated values.
-
-Header names are not lowercased, and duplicates are not merged.
-
-```js
-// Prints something like:
-//
-// [ 'user-agent',
-//   'this is invalid because there can be only one',
-//   'User-Agent',
-//   'curl/7.22.0',
-//   'Host',
-//   '127.0.0.1:8000',
-//   'ACCEPT',
-//   '*/*' ]
-console.log(request.rawHeaders);
-```
+* == {string\[]}
+* == raw request/response headers list == they were received
+  * != tuples
+  * key
+    * == odd-numbered offsets
+    * NOT lowercase
+    * ⚠️if they are duplicated -> NOT merged ⚠️
+  * key values
+    * == even-numbered offsets
+  * `[key, value, key2, value2, ...]`
+  * _Example:_ message header object
+  ```js
+  [ 'ConTent-Length', '123456',
+  'content-LENGTH', '123',
+  'content-type', 'text/plain',
+  'CONNECTION', 'keep-alive',
+  'Host', 'example.com',
+  'accepT', '*/*' ]
+  ```
+  `message.rawHeaders`
+  ```js
+  // Prints something like:
+  //
+  // [ 'user-agent',
+  //   'this is invalid because there can be only one',
+  //   'User-Agent',
+  //   'curl/7.22.0',
+  //   'Host',
+  //   '127.0.0.1:8000',
+  //   'ACCEPT',
+  //   '*/*' ]
+  console.log(request.rawHeaders);
+  ```
 
 ### `message.rawTrailers`
 
