@@ -1412,7 +1412,7 @@ nothing and waits for more input.
 added: v0.1.17
 -->
 
-* Extends: {net.Server}
+* extends: {`net.Server`}
 
 ### Event: `'checkContinue'`
 
@@ -1797,8 +1797,8 @@ reverse proxy in front.
 
 ### `server.listen()`
 
-Starts the HTTP server listening for connections.
-This method is identical to [`server.listen()`][] from [`net.Server`][].
+* starts the HTTP server / listen for connections
+* == [`net.Server`][]'s [`server.listen()`][]
 
 ### `server.listening`
 
