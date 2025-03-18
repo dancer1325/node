@@ -27,3 +27,4 @@ console.log(process.env.TESTTHIRD);
 // 2.5 process.cwd
 console.log("process.cwd " + process.cwd);
 console.log(process.cwd);
+console.log(process.cwd());
