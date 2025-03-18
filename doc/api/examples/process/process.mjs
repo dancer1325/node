@@ -23,3 +23,7 @@ console.log(process.env.testFourth);
 
 // 2.4 if you run it | Windows, case-insensitive
 console.log(process.env.TESTTHIRD);
+
+// 2.5 process.cwd
+console.log("process.cwd " + process.cwd);
+console.log(process.cwd);

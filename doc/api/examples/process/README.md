@@ -5,4 +5,3 @@
 
 # How to run?
 * `node process.mjs` or `node process.cjs`
-*
