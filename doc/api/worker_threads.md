@@ -6,17 +6,19 @@
 
 <!-- source_link=lib/worker_threads.js -->
 
-The `node:worker_threads` module enables the use of threads that execute
-JavaScript in parallel. To access it:
+* `node:worker_threads`
+  * == module / 💡enables the use of threads / execute JavaScript in parallel 💡
+  * how to use it?
+    ```js
+    const worker = require('node:worker_threads');
+    ```
+  * use cases
+    * perform CPU-intensive JavaScript operations
+  * NOT use cases
+    * I/O-intensive work
+      * Reason: 🧠Node.js built-in asynchronous I/O operations' efficiency > Workers | I/O operations's efficiency 🧠
 
-```js
-const worker = require('node:worker_threads');
-```
-
-Workers (threads) are useful for performing CPU-intensive JavaScript operations.
-They do not help much with I/O-intensive work. The Node.js built-in
-asynchronous I/O operations are more efficient than Workers can be.
-
+* TODO:
 Unlike `child_process` or `cluster`, `worker_threads` can share memory. They do
 so by transferring `ArrayBuffer` instances or sharing `SharedArrayBuffer`
 instances.
