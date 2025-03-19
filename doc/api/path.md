@@ -6,16 +6,8 @@
 
 <!-- source_link=lib/path.js -->
 
-The `node:path` module provides utilities for working with file and directory
-paths. It can be accessed using:
-
-```cjs
-const path = require('node:path');
-```
-
-```mjs
-import path from 'node:path';
-```
+* `node:path`
+  * 👀== module / provides utilities -- for working with -- file & directory paths 👀
 
 ## Windows vs. POSIX
 
@@ -550,42 +542,17 @@ A [`TypeError`][] is thrown if either `from` or `to` is not a string.
 added: v0.3.4
 -->
 
-* `...paths` {string} A sequence of paths or path segments
+* `...paths`
+  * == {string}
+    * if SOME argument != string -> throws a [`TypeError`][]
+  * == sequence of paths OR path segments /
+    * processed -- from -- right to left ⚠️TILL found an absolute path ⚠️
+  * if it contains trailing slashes (`/`) != CURRENT working directory -> they are removed
+  * Zero-length `path` segments -> ignored
+  * if you do NOT pass anything (== `path.resolve()`) -> returns the CURRENT working directory's absolute path
 * Returns: {string}
-
-The `path.resolve()` method resolves a sequence of paths or path segments into
-an absolute path.
-
-The given sequence of paths is processed from right to left, with each
-subsequent `path` prepended until an absolute path is constructed.
-For instance, given the sequence of path segments: `/foo`, `/bar`, `baz`,
-calling `path.resolve('/foo', '/bar', 'baz')` would return `/bar/baz`
-because `'baz'` is not an absolute path but `'/bar' + '/' + 'baz'` is.
-
-If, after processing all given `path` segments, an absolute path has not yet
-been generated, the current working directory is used.
-
-The resulting path is normalized and trailing slashes are removed unless the
-path is resolved to the root directory.
-
-Zero-length `path` segments are ignored.
-
-If no `path` segments are passed, `path.resolve()` will return the absolute path
-of the current working directory.
-
-```js
-path.resolve('/foo/bar', './baz');
-// Returns: '/foo/bar/baz'
-
-path.resolve('/foo/bar', '/tmp/file/');
-// Returns: '/tmp/file'
-
-path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
-// If the current working directory is /home/myself/node,
-// this returns '/home/myself/node/wwwroot/static_files/gif/image.gif'
-```
-
-A [`TypeError`][] is thrown if any of the arguments is not a string.
+* -- resolves a -- sequence of paths or path segments / it's absolute path
+  * 👀if AFTER processing ALL given `paths` segments, NOT generated an ABSOLUTE path -> current working directory is used 👀
 
 ## `path.sep`
 
