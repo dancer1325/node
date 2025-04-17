@@ -988,7 +988,9 @@ changes:
   * `fs.constants.COPYFILE_FICLONE_FORCE`
     * copy operation will -- try to -- create a copy-on-write reflink
     * if the platform does NOT support copy-on-write -> operation will fail
-* Returns: {Promise} Fulfills with `undefined` upon success.
+* Returns:
+  * `Promise`
+  * fulfills -- with -- `undefined` upon success
 
 * `src` -- is copied DIRECTLY to -- `dest`
   * ⚠️if `dest` ALREADY exists > it's overwritten ⚠️
@@ -2387,32 +2389,16 @@ changes:
 * copy operation
   * NO guarantees atomicity
 
-* It is possible to create a mask consisting of the bitwise OR of two or more values (e.g.
-`fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE`).
-
-* `fs.constants.COPYFILE_EXCL`: The copy operation will fail if `dest` already
-  exists.
-* `fs.constants.COPYFILE_FICLONE`: The copy operation will attempt to create a
-  copy-on-write reflink. If the platform does not support copy-on-write, then a
-  fallback copy mechanism is used.
-* `fs.constants.COPYFILE_FICLONE_FORCE`: The copy operation will attempt to
-  create a copy-on-write reflink. If the platform does not support
-  copy-on-write, then the operation will fail.
-
-```mjs
-import { copyFile, constants } from 'node:fs';
-
-function callback(err) {
-  if (err) throw err;
-  console.log('source.txt was copied to destination.txt');
-}
-
-// destination.txt will be created or overwritten by default.
-copyFile('source.txt', 'destination.txt', callback);
-
-// By using COPYFILE_EXCL, the operation will fail if destination.txt exists.
-copyFile('source.txt', 'destination.txt', constants.COPYFILE_EXCL, callback);
-```
+* possible to create a mask / consist of bitwise OR of >= 2 values
+  * `fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE`
+* `fs.constants.COPYFILE_EXCL`
+  * if `dest` ALREADY exists -> copy operation -- will -- fail
+* `fs.constants.COPYFILE_FICLONE`
+  * copy operation will -- attempt to -- create a copy-on-write reflink
+  * if the platform does NOT support copy-on-write -> fallback copy mechanism -- is -- used
+* `fs.constants.COPYFILE_FICLONE_FORCE`
+  * copy operation will attempt to create a copy-on-write reflink
+  * if the platform does NOT support copy-on-write -> operation will fail
 
 ### `fs.cp(src, dest[, options], callback)`
 
