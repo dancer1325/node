@@ -10,6 +10,7 @@
   * 👀== object / about CURRENT Node.js process,👀
     * provides information
     * enable control it
+  * == 👀[`EventEmitter`][]'s instance👀
   * how to use it?
     ```mjs
     import process from 'node:process';
@@ -20,8 +21,6 @@
     ```
 
 ## Process events
-
-The `process` object is an instance of [`EventEmitter`][].
 
 ### Event: `'beforeExit'`
 
